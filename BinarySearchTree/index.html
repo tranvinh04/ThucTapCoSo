@@ -3,167 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <title>Binary Search Tree Visualization</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+        #controls {
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Hiển thị Cây Nhị Phân</h1>
-    <canvas id="treeCanvas" width="1120" height="500" style="border: 1px solid black;"></canvas>
-    <script>
-        class Node {
-            constructor(value, x = 0, y = 0) {
-                this.value = value;
-                this.left = null;
-                this.right = null;
-                this.x = x;
-                this.y = y;
-            }
-        }
+    <div id="controls">
+        <label for="nodeValues">Nhập các giá trị node (cách nhau bởi dấu cách):</label>
+        <input type="text" id="nodeValues" placeholder="Ví dụ: 15 20 11 10 19 27 16 30">
+        <button id="drawTreeBtn">Hiển thị cây</button>
+    </div>
+    <div id="modifyControls">
+        <label for="addNodeValue">Thêm node:</label>
+        <input type="number" id="addNodeValue" placeholder="Nhập giá trị để thêm">
+        <button id="addNodeBtn">Thêm</button>
+    
+        <label for="deleteNodeValue">Xóa node:</label>
+        <input type="number" id="deleteNodeValue" placeholder="Nhập giá trị để xóa">
+        <button id="deleteNodeBtn">Xóa</button>
+    </div>
+    <canvas id="treeCanvas" width="1000" height="700"></canvas>
 
-        class ActionBST {
-            constructor() {
-                this.root = null;
-            }
-
-            // Thêm giá trị vào cây
-            insert(value) {
-                const newNode = new Node(value);
-                if (this.root == null) {
-                    this.root = newNode;
-                } else {
-                    this.#insertNode(this.root, newNode);
-                }
-            }
-
-            #insertNode(node, newNode) {
-                if (newNode.value === node.value) return; // Không cho phép giá trị trùng
-                if (newNode.value < node.value) {
-                    if (node.left === null) {
-                        node.left = newNode;
-                    } else {
-                        this.#insertNode(node.left, newNode);
-                    }
-                } else {
-                    if (node.right === null) {
-                        node.right = newNode;
-                    } else {
-                        this.#insertNode(node.right, newNode);
-                    }
-                }
-            }
-
-            // In-order traversal để ánh xạ các node
-            inOrder(node, result = []) {
-                if (node !== null) {
-                    this.inOrder(node.left, result);
-                    result.push(node);
-                    this.inOrder(node.right, result);
-                }
-                return result;
-            }
-
-            // Level-order traversal để ánh xạ chiều dọc
-            levelOrder() {
-                const levels = [];
-                if (this.root === null) return levels;
-
-                const queue = [{ node: this.root, level: 0 }];
-                while (queue.length > 0) {
-                    const { node, level } = queue.shift();
-                    if (!levels[level]) levels[level] = [];
-                    levels[level].push(node);
-
-                    if (node.left) queue.push({ node: node.left, level: level + 1 });
-                    if (node.right) queue.push({ node: node.right, level: level + 1 });
-                }
-                return levels;
-            }
-        }
-
-        function drawTree(bst) {
-            const canvas = document.getElementById("treeCanvas");
-            const ctx = canvas.getContext("2d");
-            const canvasWidth = canvas.width;
-            const canvasHeight = canvas.height;
-
-            // Bước 1: Ánh xạ vị trí ngang (in-order traversal)
-            const inOrderNodes = bst.inOrder(bst.root);
-            const horizontalSpacing = canvasWidth / inOrderNodes.length;
-            inOrderNodes.forEach((node, index) => {
-                node.x = index * horizontalSpacing + horizontalSpacing / 2;
-            });
-
-            // Bước 2: Ánh xạ vị trí dọc (level-order traversal)
-            const levels = bst.levelOrder();
-            const verticalSpacing = 70; // Khoảng cách giữa các mức
-            levels.forEach((level, levelIndex) => {
-                level.forEach((node) => {
-                    node.y = levelIndex * verticalSpacing + 50; // Thêm khoảng cách từ đỉnh
-                });
-            });
-
-            // Bước 3: Vẽ các đường nối giữa các node
-            function drawLine(node1, node2) {
-                ctx.beginPath();
-                ctx.moveTo(node1.x, node1.y);
-                ctx.lineTo(node2.x, node2.y);
-                ctx.strokeStyle = "black";
-                ctx.lineWidth = 2;
-                ctx.stroke();
-            }
-
-            // Duyệt qua tất cả các node để vẽ
-            levels.forEach((level) => {
-                level.forEach((node) => {
-                    if (node.left) drawLine(node, node.left);
-                    if (node.right) drawLine(node, node.right);
-                });
-            });
-
-            // Bước 4: Vẽ các node
-            function drawNode(node) {
-                const radius = 20;
-                ctx.beginPath();
-                ctx.arc(node.x, node.y, radius, 0, 2 * Math.PI);
-                ctx.fillStyle = "white";
-                ctx.fill();
-                ctx.strokeStyle = "black";
-                ctx.lineWidth = 2;
-                ctx.stroke();
-                ctx.fillStyle = "black";
-                ctx.font = "16px Arial";
-                ctx.textAlign = "center";
-                ctx.textBaseline = "middle";
-                ctx.fillText(node.value, node.x, node.y);
-            }
-
-            inOrderNodes.forEach((node) => drawNode(node));
-        }
-
-        function main() {
-            const bst = new ActionBST();
-            
-            let numNodes = parseInt(prompt("Nhập số lượng nút (tối đa 10): "), 10);
-            if(isNaN(numNodes) || numNodes <= 0 || numNodes > 10) {
-                alert("Nhập số lượng không hợp lệ ! Vui lòng nhập từ 1 đến 10.");
-                return;
-            }
-            // Nhập giá trị các node
-            let values =  prompt("Nhập giá trị các nút (cách nhau bới space): ")
-                        .split(" ")
-                        .map(Number);
-            if(values.length !== numNodes) {
-                alert("Số lượng không hợp lệ với giá trị đã nhập!");
-                return;
-            }
-            //const values = [15, 20, 11, 10, 19, 27, 16, 30];
-            // const values = [15, 10, 20, 9, 12, 7, 8, 18, 19];
-            values.forEach((value) => bst.insert(value));
-
-            // Vẽ cây nhị phân
-            drawTree(bst);
-        }
-
-        main();
-    </script>
+    <script src="tree.js"></script>
 </body>
 </html>

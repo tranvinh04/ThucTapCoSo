@@ -1,0 +1,27 @@
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4; /* Màu nền */
+}
+
+#controls, #modifyControls {
+    margin-bottom: 20px;
+    margin-left: 20px;
+    text-align: left; /* Đảm bảo căn giữa nội dung */
+    width: 100%; /* Đảm bảo các điều khiển hiển thị đầy đủ */
+}
+
+button, input {
+    font-size: 14px;
+    padding: 5px 10px;
+    margin: 5px;
+}
+
+canvas {
+    border: 1px solid #000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-top: 20px; /* Tạo khoảng cách với các điều khiển */
+}
