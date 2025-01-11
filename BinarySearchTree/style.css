@@ -4,24 +4,44 @@ body {
     flex-direction: column;
     align-items: center;
     height: 100vh;
-    background-color: #f4f4f4; /* Màu nền */
+    font-family: Arial, sans-serif;
+    color: #333;
 }
 
 #controls, #modifyControls {
     margin-bottom: 20px;
-    margin-left: 20px;
-    text-align: left; /* Đảm bảo căn giữa nội dung */
-    width: 100%; /* Đảm bảo các điều khiển hiển thị đầy đủ */
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 700px;
+    text-align: center;
 }
 
 button, input {
     font-size: 14px;
     padding: 5px 10px;
     margin: 5px;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+
+}
+button {
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #45a049;
 }
 
 canvas {
-    border: 1px solid #000;
+    border: 1px solid #ddd;
+    border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    margin-top: 20px; /* Tạo khoảng cách với các điều khiển */
+    margin-top: 2px;
+    background-color: #fff;
 }

@@ -64,10 +64,11 @@ class ActionBST {
                 // Trường hợp node chỉ có con trái
                 return node.left;
             } else {
-                // Trường hợp node có cả hai con
-                const minRightValue = this.#findMinNode(node.right).value; // Tìm giá trị nhỏ nhất từ cây con bên phải
-                node.value = minRightValue; // Thay giá trị của node cần xóa bằng giá trị nhỏ nhất
-                node.right = this.#deleteNode(node.right, minRightValue); // Xóa node nhỏ nhất ở cây con bên phải
+                const minRightValue 
+                    = this.#findMinNode(node.right).value; 
+                node.value = minRightValue; 
+                node.right = this.#deleteNode
+                            (node.right, minRightValue);
                 return node;
             }
         }
@@ -134,6 +135,7 @@ function drawTree(bst) {
         ctx.beginPath();
         ctx.moveTo(node1.x, node1.y);
         ctx.lineTo(node2.x, node2.y);
+        ctx.lineWidth = 2;
         ctx.strokeStyle = "black";
         ctx.stroke();
     }
@@ -146,17 +148,31 @@ function drawTree(bst) {
 
     // Vẽ các node
     function drawNode(node) {
-        const radius = 20;
+        const radius = 22;
         ctx.beginPath();
         ctx.arc(node.x, node.y, radius, 0, 2 * Math.PI);
         ctx.fillStyle = "white";
         ctx.fill();
-        ctx.strokeStyle = "black";
+        // ctx.strokeStyle = "black";
+        // ctx.stroke();
+         // Thêm viền node
+        ctx.lineWidth = 4; // Tăng độ dày viền
+        ctx.strokeStyle = "#FFB800 "; // Màu viền xanh lá cây tươi
         ctx.stroke();
-        ctx.fillStyle = "black";
+         // Hiệu ứng bóng
+        ctx.shadowColor = "rgba(0, 0, 0, 0.3)";
+        ctx.shadowBlur = 10;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 4;
+        //
+        // Vẽ giá trị node
+        ctx.shadowColor = "transparent"; // Tắt bóng cho chữ
+        ctx.fillStyle = "#000000"; // Màu chữ (đen)
+        ctx.font = "16px Arial"; // Font chữ
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.fillText(node.value, node.x, node.y);
+
     }
     inOrderNodes.forEach((node) => drawNode(node));
 }
