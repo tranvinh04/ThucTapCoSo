@@ -23,8 +23,8 @@ class ActionBST {
     }
 
     #insertNode(node, newNode) {
-        if (newNode.value === node.value) return;
-        if (newNode.value < node.value) {
+        // if (newNode.value === node.value) return;
+        if (newNode.value <= node.value) {
             if (node.left === null) {
                 node.left = newNode;
             } else {
